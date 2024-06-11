@@ -39,6 +39,9 @@
   font-size: 20px;
   border-radius: 5px ;
 }
+.btn:hover{
+  background: green;
+}
 .character{
   margin-top: 1.5rem;
   background: rgb(54, 53, 53);

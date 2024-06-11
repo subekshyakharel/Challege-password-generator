@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 import Passwordgenerator from './hooks/use-passwordgenerator';
+import StrengthIndicator from './component/strength';
 
 function App() {
   const [length, setlength] = useState(4)
@@ -11,6 +12,17 @@ function App() {
     {title: "Include Numbers", state : false}, 
     {title: "Include symbols", state: false}
   ])
+
+  const [copied, setcopied] = useState(false)
+
+  const handleCopy = () =>{
+    navigator.clipboard.writeText(password);
+    setcopied(true)
+
+    setTimeout(()=>{
+      setcopied(false)
+    }, 1000)
+  }
 
   const handleOnCheckbox = (i) =>{
     const updatedCheckbox = [...checkbox]
@@ -27,7 +39,7 @@ function App() {
         {/* password */}
         <div className="pw">
           <span>{password}</span>
-          <button className='btn'>Copy</button>
+          <button onClick={handleCopy} className='btn'>{copied ? "Copied": "copy"}</button>
         </div>
 
         {/* character choosen */}
@@ -60,7 +72,7 @@ function App() {
 
 
           {/* strength  */}
-          <div className="strength"></div>
+          <StrengthIndicator password= {password} />
 
           {/* error handling */}
           {error && <div className='errormessage'>{error}</div>}
