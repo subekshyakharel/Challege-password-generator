@@ -78,3 +78,7 @@
   cursor: pointer;
   border-radius: 10px;
 }
+.errormessage{
+  color: red;
+  padding: 5px;
+}

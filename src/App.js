@@ -1,20 +1,32 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import Passwordgenerator from './hooks/use-passwordgenerator';
 
 function App() {
-    const checkbox = [
+  const [length, setlength] = useState(4)
+  const [checkbox, setcheckbox] = useState([
     {title : "Include Uppercase Letters", state : false}, 
     { title : "Include Lowercase Letters", state: false}, 
     {title: "Include Numbers", state : false}, 
     {title: "Include symbols", state: false}
-  ]
+  ])
+
+  const handleOnCheckbox = (i) =>{
+    const updatedCheckbox = [...checkbox]
+    updatedCheckbox[i].state = !checkbox[i].state
+    setcheckbox(updatedCheckbox)
+  }
+
+  const {password, error, generator} = Passwordgenerator()
+ 
   return (
     <div>
       <div className="wrapper">
         <div className='Center'>
         {/* password */}
         <div className="pw">
-          <span>jksdn</span>
+          <span>{password}</span>
           <button className='btn'>Copy</button>
         </div>
 
@@ -22,15 +34,16 @@ function App() {
         <div className="character">
           <div className='flex'>
              <span>Character length</span>
-             <span id='length'>0</span>
+             <span id='length'>{length}</span>
              </div>
 
              <div>
               <input type="range" 
               min= "0"
               max="20"
-              // value= "3" 
+              value= {length} 
               className='range'  
+              onChange={(e)=>setlength(e.target.value)}
               />
              </div>
 
@@ -38,7 +51,7 @@ function App() {
              {checkbox.map((item ,index)=>{
               return (
                 <div className="checkbox">
-                <input type="checkbox" />
+                <input type="checkbox" onChange={()=>(handleOnCheckbox(index))} checked= {item.state} />
                 <label key={index}> {item.title}</label>
                </div>
               )
@@ -49,8 +62,11 @@ function App() {
           {/* strength  */}
           <div className="strength"></div>
 
+          {/* error handling */}
+          {error && <div className='errormessage'>{error}</div>}
+
           {/* generator  */}
-          <button className='btn-generate'>Generate</button>
+          <button onClick={()=>(generator(checkbox, length))} className='btn-generate'>Generate</button>
         </div>
       </div>
       </div>
